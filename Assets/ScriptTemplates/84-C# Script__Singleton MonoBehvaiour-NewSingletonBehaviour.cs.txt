@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// A Singleton Monobehaviour
-public class #SCRIPTNAME# : Monobehaviour
+public class #SCRIPTNAME# : MonoBehaviour
 {
 
     #region --------------------    Public Enumerations
