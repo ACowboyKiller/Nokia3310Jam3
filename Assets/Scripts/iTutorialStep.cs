@@ -7,6 +7,7 @@ public interface iTutorialStep
 
     #region --------------------    Public Methods
 
+    void ConfigureStep();
     void InteractStep();
     bool CheckStep();
 

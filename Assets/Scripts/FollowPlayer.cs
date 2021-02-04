@@ -5,30 +5,6 @@ using UnityEngine;
 public class FollowPlayer : MonoBehaviour
 {
 
-    #region --------------------    Public Enumerations
-
-
-
-    #endregion
-
-    #region --------------------    Public Events
-
-
-
-    #endregion
-
-    #region --------------------    Public Properties
-
-
-
-    #endregion
-
-    #region --------------------    Public Methods
-
-
-
-    #endregion
-
     #region --------------------    Private Fields
 
     /// <summary>
