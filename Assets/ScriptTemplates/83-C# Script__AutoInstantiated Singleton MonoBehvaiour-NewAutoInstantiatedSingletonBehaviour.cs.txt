@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// An auto-instantiated singleton monobehaviour
-public class #SCRIPTNAME# : Monobehaviour
+/// An auto-instantiated singleton MonoBehaviour
+public class #SCRIPTNAME# : MonoBehaviour
 {
 
     #region --------------------    Public Enumerations
