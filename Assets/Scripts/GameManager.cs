@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour
 
     #region --------------------    Public Enumerations
 
-
+    /// <summary>
+    /// The available game states
+    /// </summary>
+    public enum GameState { Intro, Tutorial, Gameplay, Victory, Defeat }
 
     #endregion
 
@@ -41,9 +44,19 @@ public class GameManager : MonoBehaviour
     public AudioClip typeClip => _typeClip;
 
     /// <summary>
+    /// The sound played whenever a tutorial step is completed
+    /// </summary>
+    public AudioClip tutorialStepCompleteClip => _tutorialStepCompleteClip;
+
+    /// <summary>
     /// Returns the game's tutorial panels
     /// </summary>
     public List<GameObject> tutorialPanels => _tutorialPanels;
+
+    /// <summary>
+    /// Action fired whenever a tutorial step is completed
+    /// </summary>
+    public Action onTutorialStepCompleteEvent { get; set; } = null;
 
     #endregion
 
@@ -81,7 +94,7 @@ public class GameManager : MonoBehaviour
     public void Defeat()
     {
         state = state.LeaveState(new Defeat_GameState());
-        _victoryPanel.SetActive(true);
+        _defeatPanel.SetActive(true);
     }
 
     /// <summary>
@@ -104,6 +117,7 @@ public class GameManager : MonoBehaviour
     [Header("Audio Configurations")]
     [SerializeField] private AudioSource _audio = null;
     [SerializeField] private AudioClip _typeClip = null;
+    [SerializeField] private AudioClip _tutorialStepCompleteClip = null;
 
     [Header("UI Configurations")]
     [SerializeField] private GameObject _victoryPanel = null;
@@ -140,7 +154,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) state.InteractState();
+        if (Input.GetKeyDown(KeyCode.E)) state.InteractState(KeyCode.E);
         state.UpdateState();
     }
 

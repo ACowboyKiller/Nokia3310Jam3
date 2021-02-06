@@ -7,30 +7,6 @@ using DG.Tweening;
 public class MessagePanel : MonoBehaviour
 {
 
-    #region --------------------    Public Enumerations
-
-
-
-    #endregion
-
-    #region --------------------    Public Events
-
-
-
-    #endregion
-
-    #region --------------------    Public Properties
-
-
-
-    #endregion
-
-    #region --------------------    Public Methods
-
-
-
-    #endregion
-
     #region --------------------    Private Fields
 
     [Header("Panel Configurations")]
@@ -48,7 +24,11 @@ public class MessagePanel : MonoBehaviour
     {
         _cachedMessageText = _messageText.text;
         _messageText.text = ""; 
-        _messageText.DOText(_cachedMessageText, _cachedMessageText.Length / 10f).SetDelay(1f).OnUpdate(_CheckForTypeClipAudio).OnComplete(() => GameManager.instance.audio.Stop());
+        _messageText.DOText(_cachedMessageText, _cachedMessageText.Length / 10f)
+            .SetDelay(1f)
+            .OnUpdate(_CheckForTypeClipAudio)
+            .SetEase(Ease.Linear)
+            .OnComplete(() => GameManager.instance.audio.Stop());
     }
 
     /// <summary>
@@ -56,7 +36,7 @@ public class MessagePanel : MonoBehaviour
     /// </summary>
     private void _CheckForTypeClipAudio()
     {
-        if (GameManager.instance.audio.isPlaying) return;
+        if (GameManager.instance.audio.isPlaying || !gameObject.activeInHierarchy) return;
         GameManager.instance.audio.pitch = 1f + Random.Range(-0.1f, 0.1f);
         GameManager.instance.audio.PlayOneShot(GameManager.instance.typeClip);
     }

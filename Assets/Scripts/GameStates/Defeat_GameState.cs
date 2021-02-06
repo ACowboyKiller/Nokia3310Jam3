@@ -5,50 +5,14 @@ using UnityEngine;
 public class Defeat_GameState : iGameState
 {
 
-    #region --------------------    Public Enumerations
-
-
-
-    #endregion
-
-    #region --------------------    Public Events
-
-
-
-    #endregion
-
-    #region --------------------    Public Properties
-
-
-
-    #endregion
-
     #region --------------------    Public Methods
 
+    public GameManager.GameState GetGameState() => GameManager.GameState.Defeat;
     public iGameState EnterState() => this;
-
-    /// <summary>
-    /// Restarts the game
-    /// </summary>
-    public void InteractState() => GameManager.instance.Restart();
-
+    public void InteractState() {}
+    public void InteractState(KeyCode _pKey) => GameManager.instance.Restart();
     public iGameState LeaveState(iGameState _pNextState) => _pNextState?.EnterState();
-
-    public void UpdateState()
-    {
-    }
-
-    #endregion
-
-    #region --------------------    Private Fields
-
-
-
-    #endregion
-
-    #region --------------------    Private Methods
-
-
+    public void UpdateState() {}
 
     #endregion
 
