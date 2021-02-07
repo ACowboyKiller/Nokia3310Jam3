@@ -59,6 +59,11 @@ public class GameManager : MonoBehaviour
     public AudioClip turnInClip => _turnInClip;
 
     /// <summary>
+    /// The sound played whenever the rader picks up an item
+    /// </summary>
+    public AudioClip radarBlip => _radarBlip;
+
+    /// <summary>
     /// Returns the game's tutorial panels
     /// </summary>
     public List<GameObject> tutorialPanels => _tutorialPanels;
@@ -110,7 +115,11 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Restarts the game
     /// </summary>
-    public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+    public void Restart()
+    {
+        state = new Intro_GameState();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+    }
 
     #endregion
 
@@ -130,6 +139,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip _tutorialStepCompleteClip = null;
     [SerializeField] private AudioClip _pickupClip = null;
     [SerializeField] private AudioClip _turnInClip = null;
+    [SerializeField] private AudioClip _radarBlip = null;
 
     [Header("UI Configurations")]
     [SerializeField] private GameObject _victoryPanel = null;
