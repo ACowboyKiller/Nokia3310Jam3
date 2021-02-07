@@ -18,6 +18,11 @@ public class Tutorial_GameState : iGameState
     /// </summary>
     public bool isTutorialMessageVisible => _stepIndex != _dismissIndex;
 
+    /// <summary>
+    /// Returns the tutorial step index
+    /// </summary>
+    public int stepIndex => _stepIndex;
+
     #endregion
 
     #region --------------------    Public Methods

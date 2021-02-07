@@ -36,10 +36,12 @@ public class Radar : MonoBehaviour
     [SerializeField] private Image _radarButton = null;
     [SerializeField] private Sprite _radarOn = null;
     [SerializeField] private Sprite _radarOff = null;
-    [SerializeField] [Range(1f, 100f)] private float _freqRatio = 20f;
-    [SerializeField] [Range(1f, 100f)] private float _radarRadius = 50f;
+    [SerializeField] [Range(1f, 30f)] private float _freqRatio = 5f;
+    [SerializeField] [Range(1f, 500f)] private float _radarRadius = 300f;
+    [SerializeField] [Range(0f, 5f)] private float _minFreq = 0.5f;
     [SerializeField] PlayerShipManager _shipManager = null;
     private float _beepTimer = 0f;
+    private bool _setup = false;
 
     #endregion
 
@@ -47,30 +49,36 @@ public class Radar : MonoBehaviour
 
     private void Update()
     {
-        allParts = (allParts.Count == 0) ? new List<BeaconPart>(FindObjectsOfType<BeaconPart>()) : allParts;
-        _radarButton.gameObject.SetActive(_shipManager.shipToggle);
+        allParts = (!_setup) ? new List<BeaconPart>(FindObjectsOfType<BeaconPart>()) : allParts;
+        _setup = true;
+        if (allParts.Count == 0) return;
+        _radarButton.enabled = _shipManager.shipToggle;
         if (!_shipManager.shipToggle) return;
+        float _dist = _FindClosestPart();
+        float _freq = Mathf.Max((_dist / _radarRadius) * _freqRatio, _minFreq);
         if (_beepTimer > 0f)
         {
-            _beepTimer -= Time.deltaTime;
+            _beepTimer = (_beepTimer < _freq) ? _beepTimer : _freq;
+            _beepTimer -= (_dist >= _radarRadius)? 0f : Time.deltaTime;
             return;
         }
-        GameManager.instance.audio.PlayOneShot(GameManager.instance.radarBlip);
-        _radarButton.sprite = _radarOn;
-        _radarButton.DOColor(Color.white, Mathf.Min(1f, _beepTimer))
-            .OnComplete(() => { _radarButton.sprite = _radarOff; });
-        float _dist = _FindClosestPart();
-        if (_dist > _radarRadius) return;
-        _beepTimer = _dist / _freqRatio;
+        else
+        {
+            _beepTimer = _radarRadius;
+            GameManager.instance.audio.PlayOneShot(GameManager.instance.radarBlip);
+            _radarButton.sprite = _radarOn;
+            _radarButton.DOColor(Color.white, Mathf.Min(_minFreq, _beepTimer))
+                .OnComplete(() => { _radarButton.sprite = _radarOff; });
+        }
     }
 
     private float _FindClosestPart()
     {
-        float _nearest = 100f;
+        float _nearest = _radarRadius;
         for (int i = 0; i < allParts.Count; i ++)
         {
             if (allParts[i] == null) continue;
-            float _dist = Vector3.Distance(allParts[i].transform.position, transform.position);
+            float _dist = Vector3.Distance(allParts[i].transform.position, _shipManager.ship.transform.position);
             _nearest = (_dist < _nearest) ? _dist : _nearest;
         }
         return _nearest;
