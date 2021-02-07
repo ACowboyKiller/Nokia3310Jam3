@@ -64,18 +64,19 @@ public class PlayerShipManager : MonoBehaviour
                     {
                         shipToggle = !shipToggle;
                     }
-                }
+                    if (shipToggle)
+                    {
+                        player.isActive = false;
+                        ship.isActive = true;
+                    }
+                    else
+                    {
+                        player.isActive = true;
+                        ship.isActive = false;
+                    }
+            }
 
-                if (shipToggle)
-                {
-                    player.isActive = false;
-                    ship.isActive = true;
-                }
-                else
-                {
-                    player.isActive = true;
-                    ship.isActive = false;
-                }
+                
             
         }
 
