@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
           
       
     }
-    void PhysicsBrake()
+    public void PhysicsBrake()
     {
         if (Input.GetKey(KeyCode.Space))
         {

@@ -60,24 +60,34 @@ public class PlayerShipManager : MonoBehaviour
            
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    if (Vector3.Distance(ship.rb.transform.position, player.rb.transform.position) < 3)
-                    {
-                        shipToggle = !shipToggle;
-                    }
+                    ship.PhysicsBrake();
+                    player.PhysicsBrake(); 
                     if (shipToggle)
                     {
-                        player.isActive = false;
-                        ship.isActive = true;
-                    }
-                    else
+                        shipToggle = !shipToggle;
+                    } else
                     {
-                        player.isActive = true;
-                        ship.isActive = false;
+                        if (Vector3.Distance(ship.rb.transform.position, player.rb.transform.position) < 3)
+                        {
+                            shipToggle = !shipToggle;
+                        }
                     }
+                    
+                   
+                }
+            if (shipToggle)
+            {
+                player.isActive = false;
+                ship.isActive = true;
+            }
+            else
+            {
+                player.gameObject.SetActive(true); 
+                player.isActive = true;
+                ship.isActive = false;
             }
 
-                
-            
+
         }
 
 
