@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         state = state.LeaveState(new Victory_GameState());
         _victoryPanel.SetActive(true);
-        _victorySpeedLabel.text = TimeSpan.FromSeconds(_gameDuration).ToString("hhh:mm:ss");
+        _victorySpeedLabel.text = $"Your Time:\n {TimeSpan.FromSeconds(_gameDuration).ToString("hh  :  mm  :  ss")}";
     }
 
     /// <summary>
@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E)) state.InteractState(KeyCode.E);
         state.UpdateState();
+        _gameDuration += (state.GetGameState() == GameState.Gameplay) ? Time.deltaTime : 0f;
     }
 
     #endregion
