@@ -82,21 +82,21 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W))
             {
-                rb.AddTorque(player.transform.right * impulseSpeed / 2, ForceMode.Force);
+                rb.AddTorque(player.transform.right * impulseSpeed / 3, ForceMode.Force);
             }
             //
             if (Input.GetKey(KeyCode.S))
             {
-                rb.AddTorque(player.transform.right * -impulseSpeed / 2, ForceMode.Force);
+                rb.AddTorque(player.transform.right * -impulseSpeed / 3, ForceMode.Force);
             }
             if (Input.GetKey(KeyCode.A))
             {
-                rb.AddTorque(player.transform.up * -impulseSpeed / 2, ForceMode.Force);
+                rb.AddTorque(player.transform.up * -impulseSpeed / 3, ForceMode.Force);
             }
             //
             if (Input.GetKey(KeyCode.D))
             {
-                rb.AddTorque(player.transform.up * impulseSpeed / 2, ForceMode.Force);
+                rb.AddTorque(player.transform.up * impulseSpeed / 3, ForceMode.Force);
             }
         }
           
@@ -158,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
         PhysicsBrake(); 
         if (isActive)
         {
-            print(rb.velocity.magnitude);
+          
             if (isPlayer)
             {
                 if (rb.angularVelocity.magnitude <= (impulseSpeed * 2))
@@ -167,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             } else
             {
-                if (rb.angularVelocity.magnitude <= (impulseSpeed * 8))
+                if (rb.angularVelocity.magnitude <= (impulseSpeed * 3))
                 {
                     PhysicsRotation();
                 }
@@ -181,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (rb.gameObject.activeInHierarchy == false)
                 {
-                        rb.gameObject.SetActive(true);
+                    rb.gameObject.SetActive(true);
                     rb.transform.position = playerShipManager.playerDock.position; 
                     rb.transform.rotation = playerShipManager.playerDock.rotation;
                 }
