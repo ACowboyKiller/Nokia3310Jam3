@@ -16,12 +16,17 @@ public class Tutorial_GameState : iGameState
     /// <summary>
     /// Returns whether or not the tutorial message is displayed
     /// </summary>
-    public bool isTutorialMessageVisible => _stepIndex != _dismissIndex;
+    public bool isTutorialMessageVisible => GameManager.instance.tutorialPanels[_stepIndex].activeSelf;
 
     /// <summary>
-    /// Returns the tutorial step index
+    /// Returns the tutorial dismiss index
     /// </summary>
-    public int stepIndex => _stepIndex;
+    public int dismissIndex => _dismissIndex;
+
+    /// <summary>
+    /// Returns when 1 frame has passed since the tutorial message was visible
+    /// </summary>
+    public bool hasDismissed => _framesSinceDismiss > 0;
 
     #endregion
 
@@ -55,6 +60,7 @@ public class Tutorial_GameState : iGameState
     {
         if (_stepIndex < 0) _MoveToNextStep();
         if (_dismissIndex == _stepIndex && tutorialSteps[_stepIndex].CheckStep()) _MoveToNextStep();
+        _framesSinceDismiss += (!isTutorialMessageVisible)? 1 : 0;
     }
 
     /// <summary>
@@ -75,6 +81,8 @@ public class Tutorial_GameState : iGameState
     public void DismissVisual()
     {
         /// Prevent additional E key presses from disrupting the flow of the tutorial
+        if (!isTutorialMessageVisible) return;
+        _framesSinceDismiss = -1;
         _dismissIndex = Mathf.Max(_dismissIndex + 1, _stepIndex);
         GameManager.instance.tutorialPanels[_stepIndex].SetActive(false);
     }
@@ -88,6 +96,7 @@ public class Tutorial_GameState : iGameState
     /// </summary>
     private int _stepIndex = -1;
     private int _dismissIndex = -1;
+    private int _framesSinceDismiss = -1;
 
     #endregion
 

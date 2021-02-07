@@ -52,8 +52,8 @@ public class Radar : MonoBehaviour
         allParts = (!_setup) ? new List<BeaconPart>(FindObjectsOfType<BeaconPart>()) : allParts;
         _setup = true;
         if (allParts.Count == 0) return;
-        _radarButton.enabled = _shipManager.shipToggle;
-        if (!_shipManager.shipToggle) return;
+        _radarButton.enabled = PlayerShipManager.shipToggle;
+        if (!PlayerShipManager.shipToggle) return;
         float _dist = _FindClosestPart();
         float _freq = Mathf.Max((_dist / _radarRadius) * _freqRatio, _minFreq);
         if (_beepTimer > 0f)

@@ -22,11 +22,16 @@ public class PlayerMovement : MonoBehaviour
     public GameObject player;
     public Rigidbody rb;
     public float impulseSpeed = 1;
-    public bool isActive;
     public bool isPlayer;
     public bool blockInput; 
     public CinemachineVirtualCamera cam;
-    public PlayerShipManager playerShipManager; 
+    public PlayerShipManager playerShipManager;
+
+    public bool isInputUnlocked =>
+        (GameManager.instance.state.GetGameState() == GameManager.GameState.Gameplay) ||
+
+        ((GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial)
+        && !((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible);
     #endregion
 
     #region --------------------    Public Methods
@@ -43,66 +48,39 @@ public class PlayerMovement : MonoBehaviour
 
     #region --------------------    Private Methods
 
-    private void Awake()
-    {
-        rb = player.GetComponent<Rigidbody>(); 
-    }
-    void CameraControl()
-    {
-        if (isActive)
-        {
-            cam.Priority = 10; 
-        } else
-        {
-            cam.Priority = 0; 
-        }
-    }
+    private void Awake() => rb = player.GetComponent<Rigidbody>();
+
+    void CameraControl() => cam.Priority = (enabled) ? 10 : 0;
+
     void PhysicsRotation()
     {
-        if (isPlayer)
+        float _val = (isPlayer) ? 10f : 3f; 
+        if (Input.GetKey(KeyCode.W))
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                rb.AddTorque(player.transform.right * impulseSpeed / 10, ForceMode.Force);
-            }
-            //
-            if (Input.GetKey(KeyCode.S))
-            {
-                rb.AddTorque(player.transform.right * -impulseSpeed / 10, ForceMode.Force);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                rb.AddTorque(player.transform.up * -impulseSpeed / 10, ForceMode.Force);
-            }
-            //
-            if (Input.GetKey(KeyCode.D))
-            {
-                rb.AddTorque(player.transform.up * impulseSpeed / 10, ForceMode.Force);
-            }
-        } else
-        {
-            if (Input.GetKey(KeyCode.W))
-            {
-                rb.AddTorque(player.transform.right * impulseSpeed / 3, ForceMode.Force);
-            }
-            //
-            if (Input.GetKey(KeyCode.S))
-            {
-                rb.AddTorque(player.transform.right * -impulseSpeed / 3, ForceMode.Force);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                rb.AddTorque(player.transform.up * -impulseSpeed / 3, ForceMode.Force);
-            }
-            //
-            if (Input.GetKey(KeyCode.D))
-            {
-                rb.AddTorque(player.transform.up * impulseSpeed / 3, ForceMode.Force);
-            }
+            rb.AddTorque(player.transform.right * impulseSpeed / _val, ForceMode.Force);
         }
-          
-      
+        if (Input.GetKey(KeyCode.S))
+        {
+            rb.AddTorque(player.transform.right * -impulseSpeed / _val, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            rb.AddTorque(player.transform.up * -impulseSpeed / _val, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            rb.AddTorque(player.transform.up * impulseSpeed / _val, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            rb.AddTorque(player.transform.forward * -impulseSpeed / _val, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            rb.AddTorque(player.transform.forward * impulseSpeed / _val, ForceMode.Force);
+        }
     }
+
     public void PhysicsBrake()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -116,90 +94,54 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = .3f;
         }
     }
+
     void PhysicsMovement()
     {
-
- 
-
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             rb.AddForce(player.transform.forward * (impulseSpeed), ForceMode.Impulse);
         }
-        //
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             rb.AddForce(player.transform.forward * (-impulseSpeed), ForceMode.Impulse);
         }
-
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                rb.AddForce(player.transform.forward * impulseSpeed/10, ForceMode.Impulse);
-            }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                rb.AddForce(player.transform.forward * -impulseSpeed / 10, ForceMode.Impulse);
-            }
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                rb.AddForce(player.transform.right * -impulseSpeed / 10, ForceMode.Impulse);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                rb.AddForce(player.transform.right * impulseSpeed / 10, ForceMode.Impulse);
-            }
-       
-          
-   
-
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            rb.AddForce(player.transform.forward * impulseSpeed/10, ForceMode.Impulse);
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            rb.AddForce(player.transform.forward * -impulseSpeed / 10, ForceMode.Impulse);
+        }
     }
 
     private void Update()
     {
         CameraControl();
         PhysicsBrake(); 
-        if (isActive)
+        if (isInputUnlocked)
         {
-          
-            if (isPlayer)
+            float _val = (isPlayer) ? 2f : 3f;
+            if (rb.angularVelocity.magnitude <= (impulseSpeed * _val))
             {
-                if (rb.angularVelocity.magnitude <= (impulseSpeed * 2))
-                {
-                    PhysicsRotation();
-                }
-            } else
-            {
-                if (rb.angularVelocity.magnitude <= (impulseSpeed * 3))
-                {
-                    PhysicsRotation();
-                }
+                PhysicsRotation();
             }
           
             if (rb.velocity.magnitude <= (impulseSpeed * 5))
             {
                 PhysicsMovement();
             }
+
             if (isPlayer)
             {
                 if (rb.gameObject.activeInHierarchy == false)
                 {
-                 
                     rb.transform.position = playerShipManager.playerDock.position; 
                     rb.transform.rotation = playerShipManager.playerDock.rotation;
                 }
                 rb.isKinematic = false;
             }
-        } else
-        {
-            if (isPlayer)
-            {
-               // rb.transform.position = playerShipManager.ship.rb.transform.position;
-                //rb.isKinematic = true;
-                //rb.gameObject.SetActive(false);
-            }
         }
-
-        //
-
     }
 
     #endregion

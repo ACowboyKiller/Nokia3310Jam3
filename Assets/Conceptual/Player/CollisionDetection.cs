@@ -52,7 +52,7 @@ public class CollisionDetection : MonoBehaviour
         if (pm.rb.velocity.magnitude > 1)
         {
             print("BONK");
-            pm.isActive = false;
+            pm.enabled = false;
             StartCoroutine(DieWithDelay()); 
         }
     }
