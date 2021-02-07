@@ -33,6 +33,7 @@ public class PlayerInventory : MonoBehaviour
     #region --------------------    Private Fields
 
     private BeaconPart _nearbyPart = null;
+    [SerializeField] private Radar _radar = null;
 
     #endregion
 
@@ -49,6 +50,7 @@ public class PlayerInventory : MonoBehaviour
         {
             GameManager.instance.audio.PlayOneShot(GameManager.instance.pickupClip);
             collected[_nearbyPart.partIndex] = true;
+            _radar.allParts[_nearbyPart.partIndex] = null;
             Destroy(_nearbyPart.gameObject);
         }
     }
