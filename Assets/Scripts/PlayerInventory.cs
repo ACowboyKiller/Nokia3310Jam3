@@ -34,17 +34,19 @@ public class PlayerInventory : MonoBehaviour
 
     private BeaconPart _nearbyPart = null;
     [SerializeField] private Radar _radar = null;
+    [SerializeField] private bool _isEnabled = true;
 
     #endregion
 
     #region --------------------    Private Methods
 
-    private void OnTriggerEnter(Collider other) => _nearbyPart = other.GetComponent<BeaconPart>();
+    private void OnTriggerEnter(Collider other) => _nearbyPart = (_isEnabled) ? other.GetComponent<BeaconPart>() : _nearbyPart;
 
     private void OnTriggerExit(Collider other) => _nearbyPart = null;
 
     private void Update()
     {
+        if (!_isEnabled) return;
         if (GameManager.instance.state.GetGameState() != GameManager.GameState.Gameplay) return;
         if (_nearbyPart != null && Input.GetKeyDown(KeyCode.E))
         {

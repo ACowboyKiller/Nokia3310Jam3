@@ -56,6 +56,11 @@ public class PlayerShipManager : MonoBehaviour
     private void Update()
     {
         ShipToggle();
+        if ((GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial) && ((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible)
+        {
+            ship.PhysicsStop();
+            player.PhysicsStop();
+        }
         isNearbyPlayer = Vector3.Distance(ship.rb.transform.position, player.rb.transform.position) < 3;
     }
 

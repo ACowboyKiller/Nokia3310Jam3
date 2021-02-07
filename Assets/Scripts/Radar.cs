@@ -49,6 +49,7 @@ public class Radar : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.state.GetGameState() != GameManager.GameState.Gameplay) return;
         allParts = (!_setup) ? new List<BeaconPart>(FindObjectsOfType<BeaconPart>()) : allParts;
         _setup = true;
         if (allParts.Count == 0) return;

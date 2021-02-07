@@ -16,7 +16,7 @@ public class Tutorial_GameState : iGameState
     /// <summary>
     /// Returns whether or not the tutorial message is displayed
     /// </summary>
-    public bool isTutorialMessageVisible => GameManager.instance.tutorialPanels[_stepIndex].activeSelf;
+    public bool isTutorialMessageVisible => (_stepIndex < tutorialSteps.Count)? GameManager.instance.tutorialPanels[_stepIndex].activeSelf : false;
 
     /// <summary>
     /// Returns the tutorial dismiss index
@@ -59,7 +59,7 @@ public class Tutorial_GameState : iGameState
     public void UpdateState()
     {
         if (_stepIndex < 0) _MoveToNextStep();
-        if (_dismissIndex == _stepIndex && tutorialSteps[_stepIndex].CheckStep()) _MoveToNextStep();
+        if (_dismissIndex == _stepIndex && tutorialSteps[_stepIndex] != null && tutorialSteps[_stepIndex].CheckStep()) _MoveToNextStep();
         _framesSinceDismiss += (!isTutorialMessageVisible)? 1 : 0;
     }
 
@@ -113,11 +113,10 @@ public class Tutorial_GameState : iGameState
             new Strafe_TutorialStep(),
             new Thrust_TutorialStep(),
             new Break_TutorialStep(),
-            new Exit_TutorialStep(),
             new Approach_TutorialStep(),
+            new Exit_TutorialStep(),
             new Interact_TutorialStep(),
             new Return_TutorialStep(),
-            new Board_TutorialStep(),
             new Radar_TutorialStep()
         };
     }
@@ -128,6 +127,7 @@ public class Tutorial_GameState : iGameState
     private void _MoveToNextStep()
     {
         _stepIndex++;
+        if (_stepIndex >= tutorialSteps.Count || tutorialSteps[_stepIndex] == null) return;
         tutorialSteps[_stepIndex].ConfigureStep();
         if (_stepIndex == 0) return;
         GameManager.instance.audio.PlayOneShot(GameManager.instance.tutorialStepCompleteClip);

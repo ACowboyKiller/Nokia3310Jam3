@@ -101,16 +101,6 @@ public class Break_TutorialStep : TutorialStep
 
 
 /// <summary>
-/// Teaches the player to exit the ship
-/// </summary>
-public class Exit_TutorialStep : TutorialStep
-{
-    public override bool CheckStep() => !PlayerShipManager.shipToggle;
-}
-
-
-
-/// <summary>
 /// Instructs the player to approach the beacon
 /// </summary>
 public class Approach_TutorialStep : TutorialStep
@@ -121,11 +111,20 @@ public class Approach_TutorialStep : TutorialStep
 
 
 /// <summary>
+/// Teaches the player to exit the ship
+/// </summary>
+public class Exit_TutorialStep : TutorialStep
+{
+    public override bool CheckStep() => !PlayerShipManager.shipToggle;
+}
+
+
+
+/// <summary>
 /// Teaches the player to interact with objects
 /// </summary>
 public class Interact_TutorialStep : TutorialStep
 {
-    public override void ConfigureStep() => _AutoScheduleNextStep(0f);
     public override bool CheckStep() => Beacon.isInteracted;
 }
 
@@ -135,17 +134,6 @@ public class Interact_TutorialStep : TutorialStep
 /// Instructs the player to return to their ship
 /// </summary>
 public class Return_TutorialStep : TutorialStep
-{
-    public override void ConfigureStep() => _AutoScheduleNextStep(0f);
-    public override bool CheckStep() => PlayerShipManager.isNearbyPlayer;
-}
-
-
-
-/// <summary>
-/// Teaches the player how to board their ship
-/// </summary>
-public class Board_TutorialStep : TutorialStep
 {
     public override bool CheckStep() => PlayerShipManager.shipToggle;
 }

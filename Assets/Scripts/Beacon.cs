@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(BoxCollider))]
 public class Beacon : MonoBehaviour
 {
 
@@ -52,10 +52,12 @@ public class Beacon : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.state.GetGameState() != GameManager.GameState.Gameplay) return;
-        if (_inv != null && Input.GetKeyDown(KeyCode.E))
+        if (_inv != null && Input.GetKeyDown(KeyCode.E) && 
+            ((GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial && ((Tutorial_GameState)GameManager.instance.state).hasDismissed) || 
+            GameManager.instance.state.GetGameState() == GameManager.GameState.Gameplay))
         {
             isInteracted = true;
+            if (GameManager.instance.state.GetGameState() != GameManager.GameState.Gameplay) return;
             GameManager.instance.audio.PlayOneShot(GameManager.instance.turnInClip);
             for (int i = 0; i < _inv.collected.Count; i ++)
             {

@@ -119,6 +119,8 @@ public class GameManager : MonoBehaviour
     {
         state = new Intro_GameState();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        _victoryPanel.SetActive(false);
+        _defeatPanel.SetActive(false);
     }
 
     #endregion

@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
     void PhysicsRotation()
     {
-        float _val = (isPlayer) ? 10f : 3f; 
+        float _val = (isPlayer) ? 10f : 1f; 
         if (Input.GetKey(KeyCode.W))
         {
             rb.AddTorque(player.transform.right * impulseSpeed / _val, ForceMode.Force);
@@ -73,11 +73,11 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rb.AddTorque(player.transform.forward * -impulseSpeed / _val, ForceMode.Force);
+            rb.AddTorque(player.transform.forward * impulseSpeed / _val, ForceMode.Force);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            rb.AddTorque(player.transform.forward * impulseSpeed / _val, ForceMode.Force);
+            rb.AddTorque(player.transform.forward * -impulseSpeed / _val, ForceMode.Force);
         }
     }
 
@@ -94,6 +94,8 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = .3f;
         }
     }
+
+    public void PhysicsStop() => rb.velocity = Vector3.zero;
 
     void PhysicsMovement()
     {
