@@ -22,7 +22,7 @@ public class PlayerShipManager : MonoBehaviour
     public PlayerMovement player;
     public bool shipToggle;
     public bool canToggle;
-    public Transform playerDock; 
+    public Transform playerDock;
     #endregion
 
     #region --------------------    Public Methods
@@ -47,7 +47,18 @@ public class PlayerShipManager : MonoBehaviour
     private void Update()
     {
         ShipToggle(); 
-        
+        if (GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial && ((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible)
+        {
+            ship.PhysicsBrake();
+            player.PhysicsBrake();
+            ship.isActive = false; 
+        } else if (GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial && ((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible == false)
+        {
+            if (shipToggle)
+            {
+                ship.isActive = true; 
+            }
+        }
 
 
 
@@ -79,7 +90,8 @@ public class PlayerShipManager : MonoBehaviour
             {
                 player.isActive = false;
                 ship.isActive = true;
-                player.transform.position = playerDock.position; 
+                player.transform.position = playerDock.position;
+                player.gameObject.SetActive(false);
             }
             else
             {
