@@ -60,7 +60,7 @@ public class PlayerShipManager : MonoBehaviour
            
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    ship.PhysicsBrake();
+                ship.rb.velocity = Vector3.zero; 
                     player.PhysicsBrake(); 
                     if (shipToggle)
                     {
@@ -79,6 +79,7 @@ public class PlayerShipManager : MonoBehaviour
             {
                 player.isActive = false;
                 ship.isActive = true;
+                player.transform.position = playerDock.position; 
             }
             else
             {
