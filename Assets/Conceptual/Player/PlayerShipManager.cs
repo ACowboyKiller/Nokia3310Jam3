@@ -47,19 +47,29 @@ public class PlayerShipManager : MonoBehaviour
     private void Update()
     {
         ShipToggle(); 
-        if (GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial && ((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible)
+        if (GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial)
         {
-            ship.PhysicsBrake();
-            player.PhysicsBrake();
-            ship.isActive = false; 
-        } else if (GameManager.instance.state.GetGameState() == GameManager.GameState.Tutorial && ((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible == false)
-        {
-            if (shipToggle)
+            if (((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible)
+            {   
+                ship.PhysicsBrake();
+                player.PhysicsBrake();
+                ship.isActive = false;
+                if (((Tutorial_GameState)GameManager.instance.state).stepIndex == 5)
+                {
+                    canToggle = true;
+                }
+            } else if (((Tutorial_GameState)GameManager.instance.state).isTutorialMessageVisible == false)
             {
-                ship.isActive = true; 
+                if (shipToggle)
+                {
+                    ship.isActive = true;
+                }
             }
-        }
 
+        }
+         
+            
+     
 
 
     }
