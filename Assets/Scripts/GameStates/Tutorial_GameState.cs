@@ -13,6 +13,11 @@ public class Tutorial_GameState : iGameState
     /// </summary>
     public List<TutorialStep> tutorialSteps { get; private set; } = null;
 
+    /// <summary>
+    /// Returns whether or not the tutorial message is displayed
+    /// </summary>
+    public bool isTutorialMessageVisible => _stepIndex != _dismissIndex;
+
     #endregion
 
     #region --------------------    Public Methods
