@@ -49,6 +49,16 @@ public class GameManager : MonoBehaviour
     public AudioClip tutorialStepCompleteClip => _tutorialStepCompleteClip;
 
     /// <summary>
+    /// The sound played whenever the player picks up a part
+    /// </summary>
+    public AudioClip pickupClip => _pickupClip;
+
+    /// <summary>
+    /// The sound played whenever the player turns in parts
+    /// </summary>
+    public AudioClip turnInClip => _turnInClip;
+
+    /// <summary>
     /// Returns the game's tutorial panels
     /// </summary>
     public List<GameObject> tutorialPanels => _tutorialPanels;
@@ -85,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         state = state.LeaveState(new Victory_GameState());
         _victoryPanel.SetActive(true);
-        _victorySpeedLabel.text = TimeSpan.FromSeconds(_gameDuration).ToString("hhh:mm:ss");
+        _victorySpeedLabel.text = $"Your Time:\n {TimeSpan.FromSeconds(_gameDuration).ToString("hh  :  mm  :  ss")}";
     }
 
     /// <summary>
@@ -118,6 +128,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource _audio = null;
     [SerializeField] private AudioClip _typeClip = null;
     [SerializeField] private AudioClip _tutorialStepCompleteClip = null;
+    [SerializeField] private AudioClip _pickupClip = null;
+    [SerializeField] private AudioClip _turnInClip = null;
 
     [Header("UI Configurations")]
     [SerializeField] private GameObject _victoryPanel = null;
@@ -156,6 +168,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E)) state.InteractState(KeyCode.E);
         state.UpdateState();
+        _gameDuration += (state.GetGameState() == GameState.Gameplay) ? Time.deltaTime : 0f;
     }
 
     #endregion
