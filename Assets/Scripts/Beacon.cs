@@ -20,6 +20,8 @@ public class Beacon : MonoBehaviour
 
     #region --------------------    Public Properties
 
+    public static bool isNearby => _inv != null;
+    public static bool isInteracted { get; private set; } = false;
     public List<bool> collected { get; set; } = new List<bool>() { false, false, false, false, false };
 
     #endregion
@@ -32,11 +34,17 @@ public class Beacon : MonoBehaviour
 
     #region --------------------    Private Fields
 
-    private PlayerInventory _inv = null;
+    private static PlayerInventory _inv = null;
 
     #endregion
 
     #region --------------------    Private Methods
+
+    private void Awake()
+    {
+        isInteracted = false;
+        _inv = null;
+    }
 
     private void OnTriggerEnter(Collider other) => _inv = other.GetComponentInChildren<PlayerInventory>();
 
@@ -47,6 +55,7 @@ public class Beacon : MonoBehaviour
         if (GameManager.instance.state.GetGameState() != GameManager.GameState.Gameplay) return;
         if (_inv != null && Input.GetKeyDown(KeyCode.E))
         {
+            isInteracted = true;
             GameManager.instance.audio.PlayOneShot(GameManager.instance.turnInClip);
             for (int i = 0; i < _inv.collected.Count; i ++)
             {
