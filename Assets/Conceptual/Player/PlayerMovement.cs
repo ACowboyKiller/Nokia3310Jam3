@@ -23,7 +23,8 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
     public float impulseSpeed = 1;
     public bool isActive;
-    public bool isPlayer; 
+    public bool isPlayer;
+    public bool blockInput; 
     public CinemachineVirtualCamera cam;
     public PlayerShipManager playerShipManager; 
     #endregion
@@ -181,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (rb.gameObject.activeInHierarchy == false)
                 {
-                    rb.gameObject.SetActive(true);
+                 
                     rb.transform.position = playerShipManager.playerDock.position; 
                     rb.transform.rotation = playerShipManager.playerDock.rotation;
                 }
@@ -191,9 +192,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isPlayer)
             {
-                rb.transform.position = playerShipManager.ship.rb.transform.position;
-                rb.isKinematic = true;
-                rb.gameObject.SetActive(false);
+               // rb.transform.position = playerShipManager.ship.rb.transform.position;
+                //rb.isKinematic = true;
+                //rb.gameObject.SetActive(false);
             }
         }
 
